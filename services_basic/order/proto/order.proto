@@ -1,0 +1,102 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+option go_package = "./;proto"; // 使用relative的情况下，这里指定的路径用不上
+
+
+service order{
+
+  rpc GetCartList(UserInfo) returns(CartListResponse);
+  rpc CreateCart(CartRequest) returns(CartResponse);
+  rpc DeleteCart(CartRequest) returns(google.protobuf.Empty);
+  rpc UpdateCart(CartRequest) returns(google.protobuf.Empty);
+
+
+
+  rpc CreateOrder(OrderRequest) returns(OrderResponse);
+  rpc GetOrderDetail(OrderRequest) returns(OrderDetailResponse);
+  rpc GetOrderList(OrderFilterRequest) returns(OrderListResponse);  
+  rpc UpdateOrderStatus(OrderStatusRequest) returns(google.protobuf.Empty);
+}
+
+message OrderStatusRequest{
+  string orderNo = 1; 
+  string status = 2;
+}
+
+message OrderFilterRequest{
+  int32 userID = 1;
+  int32 page = 2;
+  int32 pagePerNum = 3;
+}
+
+message OrderListResponse{
+  int32 total = 1;
+  repeated OrderResponse data = 2;
+}
+
+message OrderItemResponse {
+  int32 id = 1;
+  int32 orderId = 2;
+  int32 goodsId = 3;
+  string goodsName = 4;
+  string goodsImage = 5;
+  float goodsPrice = 6;
+  int32 nums = 7;
+}
+
+message OrderDetailResponse{
+  OrderResponse orderBasicInfo = 1;
+    repeated OrderItemResponse productList = 2;
+}
+message OrderResponse{
+  int32 id = 1;
+  int32 userID = 2;
+  string no = 3;  // 订单编号
+  string status = 4;  // 订单(支付)状态
+  string comment = 5;
+  float amount = 6;
+  string address = 7;
+  string name = 8;
+  string mobile = 9;
+  string createTime = 10; // 订单创建时间
+}
+
+
+message OrderRequest{
+  int32 orderID = 6; // 订单id
+  int32 userID = 1;
+  string address = 2;
+  string name = 3;
+  string mobile = 4;
+  string comment = 5;
+}
+
+
+message CartResponse{
+  int32 cartID = 1;
+  int32 userID = 2;
+  int32 productID = 3;
+  int32 num = 4;
+  bool checked = 5;
+
+  string productName = 6;
+  float price = 7;
+  string image = 8;
+}
+
+
+message CartRequest{
+  int32 userID = 1;
+  int32 productID = 2;
+  int32 num = 3;
+  bool checked = 4;
+}
+
+message UserInfo{
+  int32 id = 1;
+}
+
+message CartListResponse{
+  int32 total = 1;
+  repeated CartResponse data = 2;
+}

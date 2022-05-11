@@ -1,0 +1,12 @@
+name: 'basic_user'  # 不知道怎么写，暂且这样吧
+
+mysql:
+  host: '127.0.0.1'
+  port: 3306
+  user: 'root'
+  user: {user}
+  password: {pass}
+
+consul:
+  host: '127.0.0.1'
+  port: 8500 # http的端口

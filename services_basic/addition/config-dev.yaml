@@ -1,0 +1,17 @@
+# 本文件存放系统全局&所有服务的配置
+name: 'basic_addition'
+
+mysql:
+  host: '127.0.0.1'
+  port: 3306
+  user: {user}
+  password: {pass}
+  dbname: 'basic_addition'
+
+consul:
+  host: '127.0.0.1'
+  port: 8500 # http的端口
+
+#product:
+#  name: ''
+

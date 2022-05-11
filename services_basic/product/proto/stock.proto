@@ -1,0 +1,20 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+option go_package = "./;proto"; // 忘了，先暂时这样写
+
+service Stock{
+  rpc GetStock(ProductInfo) returns(ProductInfo); 
+  rpc SetStock(ProductInfo) returns(google.protobuf.Empty); 
+  rpc Deduction(OrderInfo) returns(google.protobuf.Empty);  
+  rpc Back(OrderInfo) returns(google.protobuf.Empty); 
+}
+
+message ProductInfo{
+  int32 productID = 1;
+  int32 num = 2;
+}
+
+message OrderInfo{
+  string orderNo = 1; 
+  repeated ProductInfo productList = 2; // 订单中的商品列表
+}

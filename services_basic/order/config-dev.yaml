@@ -1,0 +1,19 @@
+# 本文件存放系统全局&所有服务的配置
+name: 'basic_order'
+
+mysql:
+  host: '127.0.0.1'
+  port: 3306
+  user: {user}
+  password: {pass}
+  dbname: 'basic_order'
+
+consul:
+  host: '127.0.0.1'
+  port: 8500 # http的端口
+
+product_srv:
+  name: 'basic_product'
+
+stock_srv:
+  name: 'basic_stock'

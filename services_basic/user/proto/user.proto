@@ -1,0 +1,68 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+option go_package = "./;proto"; // 忘了，先暂时这样写
+
+
+service User{
+  rpc GetUserList(PageInfo) returns(UserListResponse);  
+  rpc GetUserByMobile(MobileRequest) returns(UserInfoResponse); 
+  rpc GetUserById(IdRequest) returns(UserInfoResponse); 
+  rpc CreateUser(CreateUserInfo) returns (UserInfoResponse);  
+
+  rpc UpdateUser(UpdateUserInfo) returns (google.protobuf.Empty);
+
+
+  rpc CheckPassword(CheckPasswordInfo) returns (CheckResponse); 
+}
+
+message CheckPasswordInfo{
+  string password = 1; // 原始密码
+  string encrytedPassword = 2;  // 加密后的密码
+}
+
+message CheckResponse{
+  bool success = 1;
+}
+
+message UpdateUserInfo{
+  int32 id = 1; 
+  string nickname = 2;  // 可以更新的信息
+  string gender = 3;
+  uint64 birthday = 4;
+}
+
+message MobileRequest{
+  string mobile = 1;
+}
+
+message IdRequest{
+  int32 id = 1;
+}
+
+message PageInfo {
+  uint32 pn = 1; 
+  uint32 pSize = 2; // 页大小，每页能放几个用户
+}
+
+
+message CreateUserInfo{
+  string nickname = 1;
+  string password = 2;
+  string mobile = 3;
+}
+
+// user的详细信息
+message UserInfoResponse {
+  int32 id = 1;
+  string password = 2;
+  string mobile = 3;
+  string nickname = 4;
+  uint64 birthday = 5;  
+  string gender = 6;
+  int32 role = 7; // uint也可以，无非是uint的数字可以更大一些
+}
+
+message UserListResponse {
+  int32 total = 1; // 一共有多少用户
+  repeated UserInfoResponse data = 2; 
+}

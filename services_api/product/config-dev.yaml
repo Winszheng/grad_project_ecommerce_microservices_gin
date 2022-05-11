@@ -1,0 +1,13 @@
+name: 'api-product'
+port: 8022
+product_service:
+  host: '127.0.0.1'
+  port: 50051
+  name: 'basic_product'
+
+jwt:  # jwt模块？组件？额我也不知道怎么说
+  secret: '5$!UEmvB#nRB@'
+
+consul:
+  host: '127.0.0.1'
+  port: '8500'

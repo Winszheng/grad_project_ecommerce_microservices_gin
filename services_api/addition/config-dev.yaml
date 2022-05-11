@@ -1,0 +1,13 @@
+name: 'api-addition'
+port: 8024
+addition_service:
+  host: '127.0.0.1'
+  port: 50051
+  name: 'basic_addition'
+
+jwt:
+  secret: '5$!UEmvB#nRB@'
+
+consul:
+  host: '127.0.0.1'
+  port: '8500'

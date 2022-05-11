@@ -1,0 +1,191 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+option go_package = "./;proto"; // 忘了，先暂时这样写
+
+service Product{
+
+  rpc GetProductByFilter(ProductByFilterRequest)returns(ProductByFilterResponse); 
+  rpc GetProductQuantity(ProductQuantityRequest) returns(ProductQuantityResponse); 
+  rpc CreateProduct(CreateProductInfo) returns (ProductInfoResponse);
+  rpc DeleteProductByID(ProductID) returns (google.protobuf.Empty); // 根据id删除产品
+  rpc UpdateProduct(CreateProductInfo) returns (google.protobuf.Empty);
+  rpc GetProductDetailByID(ProductID) returns(ProductInfoResponse);  
+
+  rpc GetAllItemList(google.protobuf.Empty) returns(ItemListResponse);
+  rpc GetSubItem(ItemListRequest) returns(SubItemListResponse); // 获取子分类
+  rpc CreateItem(ItemInfoRequest) returns(ItemInfoResponse); // 新建分类
+  rpc DeleteItem(DeleteItemRequest) returns(google.protobuf.Empty); //删除分类
+  rpc UpdateItem(ItemInfoRequest) returns(google.protobuf.Empty); //修改分类信息
+
+  rpc BrandList(BrandFilterRequest) returns(BrandListResponse); 
+  rpc GetBrand(BrandRequest) returns(BrandInfoResponse);
+  rpc CreateBrand(BrandRequest) returns(BrandInfoResponse); //新建品牌信息
+  rpc DeleteBrand(BrandRequest) returns(google.protobuf.Empty); //删除品牌
+  rpc UpdateBrand(BrandRequest) returns(google.protobuf.Empty); 
+
+
+  rpc ItemBrandList(ItemBrandFilterRequest) returns(ItemBrandListResponse); 
+  rpc GetBrandListByItem(ItemInfoRequest) returns(BrandListResponse); 
+  rpc CreateItemBrand(ItemBrandRequest) returns(ItemBrandResponse);
+  rpc DeleteItemBrand(ItemBrandRequest) returns(google.protobuf.Empty);
+  rpc UpdateItemBrand(ItemBrandRequest) returns(google.protobuf.Empty);
+}
+
+message ItemBrandRequest{
+  int32 id = 1;
+  int32 itemID = 2;
+  int32 brandID = 3;
+}
+
+// 没想清楚就写proto文件，真是大失败
+message ItemBrandResponse{
+  int32 id = 1;
+  BrandInfoResponse brand = 2;  // 这个字段貌似根本没用上
+  ItemInfoResponse category = 3;  // 这个字段貌似也没有用上
+}
+
+message ItemBrandListResponse {
+  int32 total = 1;
+  repeated ItemBrandResponse data = 2;
+}
+
+message ItemBrandFilterRequest{
+  int32 pages = 1;
+  int32 pagePerNums = 2;
+}
+
+message BrandRequest {
+  int32 id = 1;
+  string name = 2;
+  string logo = 3;
+}
+
+message BrandListResponse {
+  int32 total = 1;
+  repeated BrandInfoResponse data = 2;
+}
+
+message BrandFilterRequest {
+  int32 pages = 1;
+  int32 pagePerNums = 2;
+}
+
+message DeleteItemRequest{
+  int32 id = 1;
+}
+
+message ItemInfoRequest{
+  int32 id = 1;
+  string name = 2;
+  int32 parentItem = 3;
+  int32 level = 4;
+  bool isTab = 5;
+}
+
+message ItemInfoResponse {
+  int32 id = 1;
+  string name = 2;
+  int32 parentItem = 3;
+  int32 level = 4;
+  bool isTab = 5;
+}
+
+message SubItemListResponse{
+  int32 total = 1;
+  ItemInfoResponse info = 2;
+  repeated ItemInfoResponse subItem = 3;
+}
+
+message ItemListRequest{
+  int32 id = 1;
+  int32 level = 2;
+}
+
+message ItemListResponse{
+  int32 total = 1;
+  repeated ItemInfoResponse data = 2;
+  string jsonData = 3; 
+}
+
+message ProductID{
+  int32 id = 1;
+}
+
+
+message BrandInfoResponse{
+  int32 id = 1;
+  string name = 2;
+  string logo = 3;
+}
+
+message ProductInfoResponse{
+  int32 id = 1;
+  int32 itemID = 2;
+  string name = 3;
+  string articleNum = 4;  // 货号
+  int32 clickNum = 5;
+  int32 soldNum = 6;
+  int32 favoriteNum = 7;
+  float normalPrice = 9;
+  float proPrice = 10;
+  string brief = 11;
+  string description = 12;
+  bool isShipFree = 13;
+  repeated string images = 14;
+  repeated string descImages = 15;
+  string frontImage = 16;
+  bool isNew = 17;
+  bool isHot = 18;
+  bool onSale = 19;
+  int64 addTime = 20;
+//  CategoryBriefInfoResponse category = 21; 不想要目录简介，不写了
+  BrandInfoResponse brand = 22;
+  ItemInfoResponse item = 23; // 漏写了个品牌信息字段！！绝望啊！！！改得好麻烦！！！
+}
+
+message CreateProductInfo{
+  int32 id = 1;
+  string name = 2;
+  string articleNum = 3;  // 货号
+  int32 stocks = 7; // 库存，
+  float normalPrice = 8;
+  float proPrice = 9;
+  string brief = 10;
+  string description = 11;
+  bool isShipFree = 12;
+  repeated string images = 13;
+  repeated string descImages = 14;
+  string frontImage = 15;
+  bool isNew = 16;
+  bool isHot = 17;
+  bool isOnSale = 18;
+  int32 itemID = 19;
+  int32 brandID = 20;
+}
+
+message ProductByFilterRequest{
+  int32 minPrice = 1;
+  int32 maxPrice = 2;
+  bool isHot = 3;
+  bool isNew = 4;
+  bool isTab = 5;
+  int32 topItem = 6;
+  int32 page = 7;
+  int32 pagePerNum = 8;
+  string keyword = 9;
+  int32 brand = 10;
+}
+
+message ProductByFilterResponse{
+  int32 total = 1;
+  repeated ProductInfoResponse data = 2;
+}
+
+message ProductQuantityRequest{
+  repeated int32 id = 1;
+}
+
+message ProductQuantityResponse{
+  int32 total = 1;
+  repeated ProductInfoResponse data = 2;
+}
